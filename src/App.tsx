@@ -1452,26 +1452,19 @@ export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [theme, setTheme] = useState(localStorage.getItem('conduit-theme') || 'dark');
 
-  
   useEffect(() => {
-    const savedTheme = localStorage.getItem('conduit-theme') || 'dark';
-    if (savedTheme === 'light') {
+    if (theme === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
     }
-  }, []);
+    localStorage.setItem('conduit-theme', theme);
+  }, [theme]);
 
   const toggleTheme = () => {
-    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    if (isLight) {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('conduit-theme', 'dark');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('conduit-theme', 'light');
-    }
-    // Force a re-render to update the button text
-    setSearchOpen(s => s);
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
   const handleNavigate = (id: string) => {
@@ -1609,7 +1602,7 @@ export default function App() {
               onClick={toggleTheme}
               className="px-3 py-1.5 rounded-lg bg-text-primary/5 hover:bg-text-primary/10 border border-text-primary/10 text-xs font-medium text-text-secondary hover:text-text-primary transition-all"
             >
-              {document.documentElement.getAttribute('data-theme') === 'light' ? '☀ Light' : '◐ Dark'}
+              {theme === 'light' ? '☀ Light' : '◐ Dark'}
             </button>
             <a href="#" className="p-2 text-text-secondary hover:text-text-primary transition-colors">
               <Github className="w-5 h-5" />
