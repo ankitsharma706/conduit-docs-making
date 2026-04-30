@@ -1,0 +1,233 @@
+import fs from 'fs';
+
+// 1. Update index.css
+const cssContent = `@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-base:       #1C1F22;
+  --bg-surface:    #2D3032;
+  --bg-elevated:   #242729;
+  --bg-card:       #333638;
+  --bg-hover:      #3A3D40;
+  --bg-active:     #2D1A3E;
+  --bg-overlay:    rgba(28,31,34,0.92);
+
+  --border-subtle: #3A3D40;
+  --border-medium: #555759;
+  --border-strong: #7D7F80;
+
+  --accent:        #9615DB;
+  --accent-dim:    #7A10BB;
+  --accent-glow:   #B050E8;
+  --accent-bg:     #2D1A3E;
+  --accent-border: #5E0F8A;
+  --accent-text:   #C084FC;
+  --accent-text-strong: #E0AAFF;
+
+  --text-primary:  #F0F1F2;
+  --text-secondary:#D2D3D3;
+  --text-muted:    #7D7F80;
+  --text-disabled: #555759;
+  --text-inverse:  #1C1F22;
+  --text-code:     #D2D3D3;
+
+  --json-key:      #93C5FD;
+  --json-string:   #34D09A;
+  --json-number:   #E8A000;
+  --json-boolean:  #C084FC;
+  --json-bracket:  #7D7F80;
+  --json-comment:  #555759;
+
+  --success-bg:    #0D2E1A;
+  --success-border:#0F5132;
+  --success-text:  #34D074;
+
+  --warning-bg:    #2E1F00;
+  --warning-border:#7A4F00;
+  --warning-text:  #E8A000;
+
+  --danger-bg:     #2E0A0A;
+  --danger-border: #7A1515;
+  --danger-text:   #EF4444;
+
+  --info-bg:       #0F1E3A;
+  --info-border:   #1D3A7A;
+  --info-text:     #93C5FD;
+}
+
+[data-theme="light"] {
+  --bg-base:       #F5F5F6;
+  --bg-surface:    #FFFFFF;
+  --bg-elevated:   #FAFAFA;
+  --bg-card:       #FFFFFF;
+  --bg-hover:      #F0F0F2;
+  --bg-active:     #F0E5FF;
+  --bg-overlay:    rgba(245,245,246,0.92);
+
+  --border-subtle: #E0E0E2;
+  --border-medium: #D2D3D3;
+  --border-strong: #7D7F80;
+
+  --accent:        #8010C8;
+  --accent-dim:    #6B0DAA;
+  --accent-glow:   #9615DB;
+  --accent-bg:     #F5E6FF;
+  --accent-border: #D4A0F5;
+  --accent-text:   #5C0E8A;
+  --accent-text-strong: #3D0860;
+
+  --text-primary:  #1C1F22;
+  --text-secondary:#2D3032;
+  --text-muted:    #555759;
+  --text-disabled: #7D7F80;
+  --text-inverse:  #FFFFFF;
+  --text-code:     #2D3032;
+
+  --json-key:      #1D4ED8;
+  --json-string:   #0D6E38;
+  --json-number:   #8A5500;
+  --json-boolean:  #7C3AED;
+  --json-bracket:  #555759;
+  --json-comment:  #7D7F80;
+
+  --success-bg:    #DCFCE7;
+  --success-border:#BBF7D0;
+  --success-text:  #166534;
+
+  --warning-bg:    #FEF9C3;
+  --warning-border:#FDE68A;
+  --warning-text:  #854D0E;
+
+  --danger-bg:     #FEE2E2;
+  --danger-border: #FECACA;
+  --danger-text:   #991B1B;
+
+  --info-bg:       #EFF6FF;
+  --info-border:   #BFDBFE;
+  --info-text:     #1E40AF;
+}
+
+@theme {
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", "Fira Code", "Cascadia Code", monospace;
+
+  --color-navy-950: var(--bg-base);
+  --color-navy-900: var(--bg-surface);
+  --color-navy-800: var(--bg-elevated);
+  --color-indigo-accent: var(--accent);
+  --color-mint-success: var(--success-text);
+  --color-amber-warning: var(--warning-text);
+  --color-red-danger: var(--danger-text);
+  
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
+  --color-border-subtle: var(--border-subtle);
+}
+
+@layer base {
+  body {
+    @apply bg-navy-950 text-text-primary font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-medium);
+  }
+}
+
+.copy-button {
+  @apply absolute top-3 right-3 p-1.5 rounded-md bg-text-primary/5 border border-text-primary/10 text-text-primary/50 hover:text-text-primary hover:bg-text-primary/10 transition-all opacity-0 group-hover:opacity-100;
+}
+
+.endpoint-badge {
+  @apply px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider;
+}
+
+.badge-get { @apply bg-mint-success/20 text-mint-success border border-mint-success/30; }
+.badge-post { @apply bg-amber-warning/20 text-amber-warning border border-amber-warning/30; }
+
+.callout {
+  @apply p-4 my-6 rounded-r-lg border-l-4;
+}
+
+.callout-info { background: var(--accent-bg); border-color: var(--accent); color: var(--accent-text); }
+.callout-warning { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-text); }
+.callout-danger { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); }
+
+/* Highlight JS overrides */
+.hljs { color: var(--text-code); background: var(--bg-elevated); }
+.hljs-attr { color: var(--json-key); }
+.hljs-string { color: var(--json-string); }
+.hljs-number { color: var(--json-number); }
+.hljs-literal { color: var(--json-boolean); }
+.hljs-punctuation { color: var(--json-bracket); }
+.hljs-comment { color: var(--json-comment); }
+`;
+fs.writeFileSync('src/index.css', cssContent);
+
+// 2. Modify App.tsx to replace text-white with text-text-primary, etc.
+let appContent = fs.readFileSync('src/App.tsx', 'utf-8');
+
+// The hack: Replace white utilities with our custom mapped utilities
+appContent = appContent.replace(/text-white/g, 'text-text-primary');
+appContent = appContent.replace(/border-white/g, 'border-text-primary');
+appContent = appContent.replace(/bg-white/g, 'bg-text-primary');
+appContent = appContent.replace(/bg-black/g, 'bg-text-inverse');
+appContent = appContent.replace(/border-transparent/g, 'border-transparent');
+
+// 3. Add Theme Toggle Logic
+const themeToggleScript = `
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('conduit-theme') || 'dark';
+    if (savedTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isLight) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('conduit-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('conduit-theme', 'light');
+    }
+    // Force a re-render to update the button text
+    setSearchOpen(s => s);
+  };
+`;
+
+appContent = appContent.replace('const handleNavigate = (id: string) => {', themeToggleScript + '\n  const handleNavigate = (id: string) => {');
+
+// Add Theme Toggle Button next to Github link
+const themeButtonHTML = `
+            <button 
+              onClick={toggleTheme}
+              className="px-3 py-1.5 rounded-lg bg-text-primary/5 hover:bg-text-primary/10 border border-text-primary/10 text-xs font-medium text-text-secondary hover:text-text-primary transition-all"
+            >
+              {document.documentElement.getAttribute('data-theme') === 'light' ? '☀ Light' : '◐ Dark'}
+            </button>
+            <a href="#" className="p-2 text-text-secondary hover:text-text-primary transition-colors">
+`;
+
+appContent = appContent.replace('<a href="#" className="p-2 text-text-secondary hover:text-white transition-colors">', themeButtonHTML);
+
+fs.writeFileSync('src/App.tsx', appContent);
+console.log('Applied theme successfully.');
